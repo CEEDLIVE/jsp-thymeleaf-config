@@ -6,7 +6,7 @@ JSP's have proven their strength in the past, but it also has weaknesses. The go
 
 When programming, we talk a lot about decoupling. Yet when we deploy to an application server (or servlet container), we rely on the fact that the container will run our JSP's as expected. For this, you need to ensure that the servlet container in production is exactly the same as when you are programming to be 100% sure everything works as expected (example: tags can behave differently in different tomcat versions). Fair enough, that makes somehow sense. But if you want to upgrade your server or you want to upgrade from a developer point of view, suddenly a lot of communication between the infrastructure team and development team needs to happen. So we get a tight coupling between the application and the application server itself. It would be nice to decouple this...
 
-Using a template engine can offer more benefits than only decoupling. But to start, how do you configure Thymeleaf. Or better yet, how do you configure Thymeleaf next to existing views without breaking them. We want a gradual migration.
+A template engine can offer more benefits than only decoupling. But to start, how do you configure Thymeleaf. Or better yet, how do you configure Thymeleaf next to existing views without breaking them. We want a gradual migration.
 
 ## Configuration ##
 As an example, we will use a standard Spring Boot application.
@@ -66,7 +66,7 @@ And following properties (application.properties):
     spring.view.view-names:jsp/*
     spring.thymeleaf.view-names:thymeleaf/*
 
-So what happened? First off we configured Spring Boot to use Thymeleaf by adding a dependency to "spring-boot-starter-thymeleaf". Thymeleaf will be used by default since this is in the autoconfiguration.
+So what happened? First we configured Spring Boot to use Thymeleaf by adding a dependency to "spring-boot-starter-thymeleaf". Thymeleaf will be used by default since this is in the autoconfiguration.
 Now we add another viewresolver (InternalResourceViewResolver), the one that is used for the JSP's and we configure it with what is in the application properties.
 
 For the JSP's, we configured the view resolver as: views (JSP's) are inside WEB-INF, but only handle files that start with "jsp/" (viewnames). So our structure for the JSP's looks like this: 
