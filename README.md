@@ -4,15 +4,13 @@ Template engines are getting more and more popular over the usage of JSP's. For 
 
 JSP's have proven their strength in the past, but it also has weaknesses. The good thing about JSP's is that it is a standard and you can do almost anything to achieve your goal. We are of course talking about using the expression language and not scriptlets (avoid this).
 
-When programming, we talk a lot about decoupling. Yet when we deploy to an application server (or servlet container), we rely on the fact that the container will run our JSP's as expected. For this, you need to ensure that the servlet container in production is exactly the same as when you are programming to be 100% sure everything works as expected. Fair enough, that makes somehow sense. But if you want to upgrade your server or you want to upgrade from a developer point of view, suddenly a lot of communication between the infrastructure team and development team needs to happen. So we get a tight coupling between the application and the application server itself. It would be nice to decouple this...
+When programming, we talk a lot about decoupling. Yet when we deploy to an application server (or servlet container), we rely on the fact that the container will run our JSP's as expected. For this, you need to ensure that the servlet container in production is exactly the same as when you are programming to be 100% sure everything works as expected (example: tags can behave differently in different tomcat versions). Fair enough, that makes somehow sense. But if you want to upgrade your server or you want to upgrade from a developer point of view, suddenly a lot of communication between the infrastructure team and development team needs to happen. So we get a tight coupling between the application and the application server itself. It would be nice to decouple this...
 
 Using a template engine can offer more benefits than only decoupling. But to start, how do you configure Thymeleaf. Or better yet, how do you configure Thymeleaf **without** breaking existing views. We want a gradual migration.
 
 As an example, we will use a standard Spring Boot application.
 
-    @Configuration
-    @EnableAutoConfiguration
-    @ComponentScan
+    @SpringBootApplication
     public class AppConfig {
 
         @Value("${spring.view.prefix:}")
@@ -21,14 +19,17 @@ As an example, we will use a standard Spring Boot application.
         @Value("${spring.view.suffix:}")
         private String suffix = "";
 
+        @Value("${spring.view.view-names:}")
+        private String viewNames = "";
+
         @Bean
-        public InternalResourceViewResolver internalResourceViewResolver() {
-            InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-            resolver.setPrefix(prefix);
-            resolver.setSuffix(suffix);
-            resolver.setViewClass(JstlView.class);
-            resolver.setOrder(Ordered.HIGHEST_PRECEDENCE);
-            return resolver;
+        InternalResourceViewResolver jspViewResolver() {
+            final InternalResourceViewResolver vr = new InternalResourceViewResolver();
+            vr.setPrefix(prefix);
+            vr.setSuffix(suffix);
+            vr.setViewClass(JstlView.class);
+            vr.setViewNames(viewNames);
+            return vr;
         }
     }
 
@@ -57,10 +58,18 @@ With following dependencies:
         <artifactId>jstl</artifactId>
     </dependency>
 
-So what happened? First off we configured Spring Boot to use Thymeleaf by adding a dependency to "spring-boot-starter-thymeleaf". Thymeleaf will be used by default since this is in the autoconfiguration.
-Now we add another viewresolver, the one that is used for the JSP's and we give it the highest priority:
+And following properties (application.properties):
 
-    resolver.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    spring.view.prefix:/WEB-INF/
+    spring.view.suffix:.jsp
+    spring.view.view-names:jsp/*
+    spring.thymeleaf.view-names:thymeleaf/*
+
+So what happened? First off we configured Spring Boot to use Thymeleaf by adding a dependency to "spring-boot-starter-thymeleaf". Thymeleaf will be used by default since this is in the autoconfiguration.
+Now we add another viewresolver (InternalResourceViewResolver), the one that is used for the JSP's and we configure it with what is in the application properties.
+
+For the JSP's, we configured the view resolver as: views (JSP's) are inside WEB-INF, but only handle files that start with "jsp/". 
 
 Now, you can start using Thymeleaf thymeleaf. But all other views (JSP's) continue to work. Even better, if you by accident create a view with the same name, the JSP still has a higher priority. So from now you can start using Thymeleaf, or start migrating other JSP's to Thymeleaf.
+
 
