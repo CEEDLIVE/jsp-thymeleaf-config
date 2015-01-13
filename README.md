@@ -80,7 +80,7 @@ Thymeleaf uses the same approach, by default all templates are stored inside the
     	> templates
     		> thymeleaf
 
-When we write a controller and we let it return a view starting with "jsp/", the jsp view resolver will be used. If you return a view starting with "thymeleaf/", the thymeleaf resolver is chosen.
+**When we write a controller and we let it return a view starting with "jsp/", the jsp view resolver will be used. If you return a view starting with "thymeleaf/", the thymeleaf resolver is chosen.**
 
 ## Example ##
 The following controller is using this logic. By default, the jsp view is returned. Additionally, a request parameter is added so that you can even switch viewresolver at runtime. You probably won't need this for your project, but it was a good example to demonstrate the behaviour:
