@@ -9,13 +9,13 @@ import org.springframework.web.servlet.view.JstlView;
 @SpringBootApplication
 public class AppConfig {
 
-    @Value("${spring.view.prefix:}")
+    @Value("${spring.view.prefix}")
     private String prefix = "";
 
-    @Value("${spring.view.suffix:}")
+    @Value("${spring.view.suffix}")
     private String suffix = "";
 
-    @Value("${spring.view.view-names:}")
+    @Value("${spring.view.view-names}")
     private String viewNames = "";
 
     @Bean
