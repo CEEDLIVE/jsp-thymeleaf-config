@@ -4,7 +4,7 @@ Template engines are getting more and more popular over the usage of JSP's. For 
 
 JSP's have proven their strength in the past, but it also has weaknesses. The good thing about JSP's is that it is a standard and you can do almost anything to achieve your goal. We are of course talking about using the expression language and not scriptlets (avoid this).
 
-When programming, we talk a lot about decoupling. Yet when we deploy to an application server (or servlet container), we rely on the fact that the container will run our JSP's as expected. For this, you need to ensure that the servlet container in production is exactly the same as when you are programming to be 100% sure everything works as expected (example: tags can behave differently in different tomcat versions). Fair enough, that makes somehow sense. But if you want to upgrade your server or you want to upgrade from a developer point of view, suddenly a lot of communication between the infrastructure team and development team needs to happen. So we get a tight coupling between the application and the application server itself. It would be nice to decouple this...
+When programming, we talk a lot about decoupling. Yet when we deploy to an application server (or servlet container), we rely on the fact that the container will run our JSP's as expected. For this, you need to ensure that the servlet container in production is exactly the same as when you are programming to be 100% sure everything works as expected (example: tags can behave differently in different tomcat versions). Fair enough, that makes somehow sense. But if you want to upgrade your server or you want to upgrade from a developer point of view, suddenly a lot of communication between the infrastructure team and development team needs to happen. So we get a tight coupling between the application and the application server itself. Tight coupling between development and infrastructure. It would be nice to decouple this...
 
 A template engine can offer more benefits than only decoupling. But to start, how do you configure Thymeleaf. Or better yet, how do you configure Thymeleaf next to existing views without breaking them. We want a gradual migration.
 
@@ -154,4 +154,3 @@ Using this or a similar approach, one can really migrate from JSP's to Thymeleaf
 ## Links ##
  - Source code
  - [Thymeleaf + Spring](http://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html)
-
